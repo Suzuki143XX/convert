@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Converter Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <div class="header">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
+                    </svg>
+                    <h1>Converter Pro</h1>
+                </div>
+                <p class="subtitle">Download YouTube as Audio or Video</p>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="audio" id="audioMode">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    Audio (MP3)
+                </button>
+                <button class="mode-btn" data-mode="video" id="videoMode">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    Video (MP4)
+                </button>
+            </div>
+
+            <div class="input-section">
+                <div class="url-input-wrapper">
+                    <input type="text" id="urlInput" placeholder="Paste YouTube URL here..." autocomplete="off">
+                    <button id="pasteBtn" class="icon-btn" title="Paste">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Audio Options -->
+            <div id="audioOptions" class="options-grid">
+                <div class="option-card">
+                    <label class="option-label">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M2 12h20"></path>
+                        </svg>
+                        Bitrate (Quality)
+                    </label>
+                    <select id="bitrateSelect" class="custom-select">
+                        <optgroup label="Low (Streaming)">
+                            <option value="64">64 kbps - Compact</option>
+                            <option value="96">96 kbps - Small</option>
+                            <option value="128" selected>128 kbps - Standard</option>
+                        </optgroup>
+                        <optgroup label="Standard">
+                            <option value="160">160 kbps - Good</option>
+                            <option value="192">192 kbps - Better</option>
+                        </optgroup>
+                        <optgroup label="High">
+                            <option value="256">256 kbps - High</option>
+                            <option value="320">320 kbps - Premium</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="option-card">
+                    <label class="option-label">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19V6l12-3v13"></path>
+                        </svg>
+                        Audio Format
+                    </label>
+                    <select id="audioFormat" class="custom-select">
+                        <optgroup label="Lossy">
+                            <option value="mp3" selected>MP3 - Universal</option>
+                            <option value="aac">AAC - Apple</option>
+                        </optgroup>
+                        <optgroup label="Lossless">
+                            <option value="flac">FLAC - Studio</option>
+                            <option value="wav">WAV - Uncompressed</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Video Options (Hidden by default) -->
+            <div id="videoOptions" class="options-grid" style="display: none;">
+                <div class="option-card full-width">
+                    <label class="option-label">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                        Video Quality (Resolution)
+                    </label>
+                    <div class="quality-grid">
+                        <button class="quality-btn" data-height="360" data-label="SD (360p)">
+                            <span class="res">360p</span>
+                            <span class="label">SD</span>
+                            <span class="size">Small</span>
+                        </button>
+                        <button class="quality-btn" data-height="480" data-label="SD (480p)">
+                            <span class="res">480p</span>
+                            <span class="label">SD</span>
+                            <span class="size">Medium</span>
+                        </button>
+                        <button class="quality-btn active" data-height="720" data-label="HD (720p)">
+                            <span class="res">720p</span>
+                            <span class="label">HD</span>
+                            <span class="size">Standard</span>
+                        </button>
+                        <button class="quality-btn" data-height="1080" data-label="Full HD (1080p)">
+                            <span class="res">1080p</span>
+                            <span class="label">FHD</span>
+                            <span class="size">Large</span>
+                        </button>
+                        <button class="quality-btn" data-height="1440" data-label="2K (1440p)">
+                            <span class="res">1440p</span>
+                            <span class="label">2K</span>
+                            <span class="size">Huge</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="file-info" id="fileInfo" style="display: none;">
+                <div class="info-row">
+                    <span class="info-label">Type:</span>
+                    <span class="info-value" id="typeDisplay">Audio</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Quality:</span>
+                    <span class="info-value" id="qualityDisplay">128 kbps MP3</span>
+                </div>
+            </div>
+
+            <button id="convertBtn" class="convert-btn">
+                <span class="btn-text">Start Download</span>
+                <div class="spinner" style="display: none;"></div>
+            </button>
+
+            <div class="status-area" id="statusArea" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="status-text" id="statusText">Preparing...</div>
+            </div>
+
+            <div class="result-area" id="resultArea" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h3>Download Complete!</h3>
+                <p id="resultText">File saved successfully</p>
+                <div class="result-actions">
+                    <button id="downloadBtn" class="download-btn">Download File</button>
+                    <button id="convertAnotherBtn" class="secondary-btn">Convert Another</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
