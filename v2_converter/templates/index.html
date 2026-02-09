@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V2 Converter - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: rgba(148, 163, 184, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        h1 {
+            color: var(--text-primary);
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="url"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        input[type="url"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .format-section {
+            margin-bottom: 24px;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .format-option {
+            position: relative;
+        }
+
+        .format-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .format-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .format-option:hover .format-label {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .format-option input:checked + .format-label {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+        }
+
+        .format-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .format-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .format-desc {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .convert-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .status-box {
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .status-box.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-box.loading {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .status-box.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .status-box.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .status-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .status-text {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--success);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">⚡</div>
+            <h1>V2 Converter</h1>
+            <p class="subtitle">Fast YouTube downloads</p>
+        </div>
+
+        <div class="input-group">
+            <label>YouTube URL</label>
+            <input type="url" id="urlInput" placeholder="https://youtube.com/watch?v=...">
+        </div>
+
+        <div class="format-section">
+            <label>Select Format</label>
+            <div class="format-grid">
+                <div class="format-option">
+                    <input type="radio" name="format" value="mp3" id="mp3" checked>
+                    <label for="mp3" class="format-label">
+                        <span class="format-icon">🎵</span>
+                        <span class="format-name">MP3</span>
+                        <span class="format-desc">Audio</span>
+                    </label>
+                </div>
+                <div class="format-option">
+                    <input type="radio" name="format" value="mp4" id="mp4">
+                    <label for="mp4" class="format-label">
+                        <span class="format-icon">🎬</span>
+                        <span class="format-name">MP4</span>
+                        <span class="format-desc">Video</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <button class="convert-btn" id="convertBtn">Convert Now</button>
+
+        <div id="statusBox" class="status-box">
+            <div class="status-title" id="statusTitle">Processing...</div>
+            <div class="status-text" id="statusText">Please wait</div>
+            <a href="#" class="download-btn" id="downloadBtn" style="display: none;">Download</a>
+        </div>
+
+        <div class="footer">Powered by RapidAPI</div>
+    </div>
+
+    <script>
+        const convertBtn = document.getElementById("convertBtn");
+        const urlInput = document.getElementById("urlInput");
+        const statusBox = document.getElementById("statusBox");
+        const statusTitle = document.getElementById("statusTitle");
+        const statusText = document.getElementById("statusText");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        let currentDownloadUrl = null;
+
+        function showLoading() {
+            statusBox.className = "status-box loading active";
+            statusTitle.textContent = "Processing...";
+            statusText.textContent = "Converting your video, please wait...";
+            downloadBtn.style.display = "none";
+            convertBtn.disabled = true;
+            convertBtn.innerHTML = '<span class="spinner"></span>Converting...';
+        }
+
+        function showSuccess(title, url) {
+            statusBox.className = "status-box success active";
+            statusTitle.textContent = "✓ Ready!";
+            statusText.textContent = title || "Your file is ready";
+            currentDownloadUrl = url;
+            downloadBtn.style.display = "inline-block";
+            downloadBtn.href = url;
+            downloadBtn.target = "_blank";
+            convertBtn.disabled = false;
+            convertBtn.textContent = "Convert Another";
+        }
+
+        function showError(message) {
+            statusBox.className = "status-box error active";
+            statusTitle.textContent = "Error";
+            statusText.textContent = message || "Something went wrong";
+            downloadBtn.style.display = "none";
+            convertBtn.disabled = false;
+            convertBtn.textContent = "Try Again";
+        }
+
+        function reset() {
+            statusBox.classList.remove("active");
+            urlInput.value = "";
+            currentDownloadUrl = null;
+            convertBtn.textContent = "Convert Now";
+        }
+
+        convertBtn.addEventListener("click", async function() {
+            const url = urlInput.value.trim();
+            const format = document.querySelector("input[name="format"]:checked").value;
+
+            if (!url) {
+                urlInput.focus();
+                return;
+            }
+
+            if (convertBtn.textContent === "Convert Another") {
+                reset();
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const formData = new FormData();
+                formData.append("url", url);
+                formData.append("format", format);
+
+                const response = await fetch("/convert", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess(data.title, data.download_url);
+                } else {
+                    showError(data.error || "Conversion failed");
+                }
+            } catch (err) {
+                showError("Network error. Please try again.");
+            }
+        });
+
+        urlInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                convertBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
